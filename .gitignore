@@ -103,6 +103,7 @@ InitTestScene*.unity*
 /*.docx
 /*.pdf
 /*.md
+!/README.md
 /*.txt
 /*.png
 /*.py
