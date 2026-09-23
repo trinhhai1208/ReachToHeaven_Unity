@@ -21,26 +21,23 @@ public abstract class Spawner : MonoBehaviour
     protected ObjectPool<IProduct>[] m_productPools;
     protected Action<IProduct> m_onExtraSetup;
 
-    protected int m_poolIndex = 0;
-
     protected virtual void SetupProductPools()
     {
         m_productPools = new ObjectPool<IProduct>[m_productPrefabs.Count];
 
         SetDefault();
 
-        m_poolIndex = 0;
         for(int i = 0; i < m_productPools.Length; ++i)
         {
             if (m_productPrefabs[i] is IProduct)
             {
-                m_poolIndex = i;
-                m_productPools[m_poolIndex] = new ObjectPool<IProduct>(
-                    CreateProduct, OnGetProduct, OnReleaseProduct, OnDestroyProduct, true, m_capacity, m_maxSize);
+                int poolIndex = i;
+                m_productPools[poolIndex] = new ObjectPool<IProduct>(
+                    () => CreateProductAt(poolIndex), OnGetProduct, OnReleaseProduct, OnDestroyProduct, true, m_capacity, m_maxSize);
             }
             else
             {
-                Debug.LogWarning($"{this}: A prefab doesn't implement IProduct {m_productPrefabs[m_poolIndex]}");
+                Debug.LogWarning($"{this}: A prefab doesn't implement IProduct {m_productPrefabs[i]}");
                 return;
             }
         }
@@ -49,12 +46,12 @@ public abstract class Spawner : MonoBehaviour
     ///<summary>
     ///Safe to call in Awake if don't have extra setup
     /// </summary>
-    protected virtual IProduct CreateProduct()
+    protected virtual IProduct CreateProductAt(int index)
     {
-        MonoBehaviour objectProduct = Instantiate(m_productPrefabs[m_poolIndex], m_productField);
+        MonoBehaviour objectProduct = Instantiate(m_productPrefabs[index], m_productField);
         IProduct product = ProductConverter.MonoToIProduct(objectProduct);
         m_onExtraSetup?.Invoke(product);
-        product.SetPool(m_productPools[m_poolIndex]);
+        product.SetPool(m_productPools[index]);
 
         return product;
     }
@@ -75,12 +72,11 @@ public abstract class Spawner : MonoBehaviour
     ///Destroy product
     ///</summary>
     protected virtual void OnDestroyProduct(IProduct product)
-        => Destroy(ProductConverter.IProductToMono(product));
+        => Destroy(ProductConverter.IProductToMono(product).gameObject);
 
     public virtual T Spawn<T>(int index) where T : class
     {
-        m_poolIndex = index;
-        return ProductConverter.IProductToAnyType<T>(m_productPools[m_poolIndex].Get());
+        return ProductConverter.IProductToAnyType<T>(m_productPools[index].Get());
     }
 
     ///<summary>

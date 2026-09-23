@@ -17,9 +17,15 @@ public class WeaponSwitcher
         m_inputController.SwitchWeaponAction.started += SwitchWeaponIndex;
     }
 
+    public void Dispose()
+    {
+        if (m_inputController != null)
+            m_inputController.SwitchWeaponAction.started -= SwitchWeaponIndex;
+    }
+
     private void SwitchWeaponIndex(InputAction.CallbackContext context)
     {
         WeaponIndex = (int)Mathf.Repeat(++WeaponIndex, m_weaponCount);
     }
-    
+
 }

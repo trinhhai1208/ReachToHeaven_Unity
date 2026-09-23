@@ -53,20 +53,8 @@ public class StateMachine
         where TStateContext : StateContext
     {
         CurrentState.Logic.ExitState(m_stateContextLoader.GetContext(CurrentState.Type));
-        if (m_checkChangeState)
-        {
-            Debug.Log($"{this} - {m_gameObjectName}: {CurrentState.Type} -> {nextState.Type}");
-        }
-        if (m_checkContextType) Debug.Log($"{this} - {m_gameObjectName}: {nextState.Type} <-> {nextState.Context}");
-
         m_stateContextLoader.LoadContext(nextState.Context, nextState.Type);
-
         CurrentState = m_stateDict[nextState.Type];
         CurrentState.Logic.EnterState(m_stateContextLoader.GetContext(nextState.Type));
     }
-
-    #region Test
-    [SerializeField] private bool m_checkChangeState;
-    [SerializeField] private bool m_checkContextType;
-    #endregion
 }

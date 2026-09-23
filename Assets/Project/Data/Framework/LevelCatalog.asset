@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 905d96a04f769514dbaace370c738433, type: 3}
+  m_Name: LevelCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::LevelCatalog
+  Levels:
+  - LevelNumber: 1
+    DisplayName: Level 1 - Beginning
+    Description: Survive 1 minute against the first waves of monsters.
+    Thumbnail: {fileID: 0}
+    Duration: 60
+    WaveInterval: 20
+    PortalCountOverride: 2
+    EnemiesPerPortalOverride: 3
+    Map: {fileID: 11400000, guid: 2dfaff0b1187e1846bb1ffd918c03558, type: 2}
+    Waves:
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75d, type: 2}
+    - {fileID: 11400000, guid: 82abaae0627cf9744a9db3f6ac6f002f, type: 2}
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75e, type: 2}
+  - LevelNumber: 2
+    DisplayName: Level 2 - Rising Darkness
+    Description: Survive 1 min 30. Enemy count and wave pace increase.
+    Thumbnail: {fileID: 0}
+    Duration: 90
+    WaveInterval: 20
+    PortalCountOverride: 2
+    EnemiesPerPortalOverride: 3
+    Map: {fileID: 11400000, guid: 2dfaff0b1187e1846bb1ffd918c03558, type: 2}
+    Waves:
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75d, type: 2}
+    - {fileID: 11400000, guid: 82abaae0627cf9744a9db3f6ac6f002f, type: 2}
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75e, type: 2}
+    - {fileID: 11400000, guid: 82abaae0627cf9744a9db3f6ac6f002f, type: 2}
+  - LevelNumber: 3
+    DisplayName: Level 3 - Demonic Siege
+    Description: Survive 2 minutes. Enemies move faster and hit harder.
+    Thumbnail: {fileID: 0}
+    Duration: 120
+    WaveInterval: 20
+    PortalCountOverride: 2
+    EnemiesPerPortalOverride: 3
+    Map: {fileID: 11400000, guid: 2dfaff0b1187e1846bb1ffd918c03558, type: 2}
+    Waves:
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75d, type: 2}
+    - {fileID: 11400000, guid: 82abaae0627cf9744a9db3f6ac6f002f, type: 2}
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75e, type: 2}
+    - {fileID: 11400000, guid: 82abaae0627cf9744a9db3f6ac6f002f, type: 2}
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75e, type: 2}
+  - LevelNumber: 4
+    DisplayName: Level 4 - Desperate Battle
+    Description: Survive 2 min 30. Face aggressive elite enemy waves.
+    Thumbnail: {fileID: 0}
+    Duration: 150
+    WaveInterval: 25
+    PortalCountOverride: 2
+    EnemiesPerPortalOverride: 3
+    Map: {fileID: 11400000, guid: 2dfaff0b1187e1846bb1ffd918c03558, type: 2}
+    Waves:
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75d, type: 2}
+    - {fileID: 11400000, guid: 82abaae0627cf9744a9db3f6ac6f002f, type: 2}
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75e, type: 2}
+    - {fileID: 11400000, guid: 82abaae0627cf9744a9db3f6ac6f002f, type: 2}
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75e, type: 2}
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75e, type: 2}
+  - LevelNumber: 5
+    DisplayName: Level 5 - Final Stand
+    Description: Survive 3 minutes. The ultimate test of your skills.
+    Thumbnail: {fileID: 0}
+    Duration: 180
+    WaveInterval: 25
+    PortalCountOverride: 2
+    EnemiesPerPortalOverride: 3
+    Map: {fileID: 11400000, guid: 2dfaff0b1187e1846bb1ffd918c03558, type: 2}
+    Waves:
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75d, type: 2}
+    - {fileID: 11400000, guid: 82abaae0627cf9744a9db3f6ac6f002f, type: 2}
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75e, type: 2}
+    - {fileID: 11400000, guid: 82abaae0627cf9744a9db3f6ac6f002f, type: 2}
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75e, type: 2}
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75d, type: 2}
+    - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75e, type: 2}

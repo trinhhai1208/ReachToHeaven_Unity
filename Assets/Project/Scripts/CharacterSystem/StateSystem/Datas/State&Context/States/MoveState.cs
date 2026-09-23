@@ -15,7 +15,7 @@ public class MoveState : StateLogic
 
             moveContext.CharacterAnimatorController.CharacterAnimator.SetBool("isMove", true);
 
-            moveContext.RoutineCaller.StartCoroutine(MoveRoutine(moveContext));
+            moveContext.MoveRoutine = moveContext.RoutineCaller.StartCoroutine(MoveRoutine(moveContext));
         }
         
     }
@@ -26,7 +26,8 @@ public class MoveState : StateLogic
         {
             moveContext.CharacterAnimatorController.CharacterAnimator.SetBool("isMove", false);
             moveContext.CompleteEvent?.Invoke();
-            moveContext.RoutineCaller.StopAllCoroutines();
+            if (moveContext.MoveRoutine != null)
+                moveContext.RoutineCaller.StopCoroutine(moveContext.MoveRoutine);
         }
     }
 
@@ -41,8 +42,8 @@ public class MoveState : StateLogic
             moveContext.CharacterRigid.MovePosition(
                 Vector2.MoveTowards(moveContext.CharacterRigid.position,
                 moveContext.TargetPosition,
-                moveContext.MovementSpeed * Time.deltaTime));
-            yield return null;
+                moveContext.MovementSpeed * Time.fixedDeltaTime));
+            yield return new WaitForFixedUpdate();
         }
         
     }

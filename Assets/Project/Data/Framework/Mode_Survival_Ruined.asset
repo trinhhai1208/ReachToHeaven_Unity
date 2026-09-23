@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d929efb146146bc42867d206419d6914, type: 3}
+  m_Name: Mode_Survival_Ruined
+  m_EditorClassIdentifier: Assembly-CSharp::GameModeDefinition
+  Id: survival_ruined
+  DisplayName: Survival
+  ModeType: 0
+  Duration: 300
+  Waves:
+  - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75d, type: 2}
+  - {fileID: 11400000, guid: 82abaae0627cf9744a9db3f6ac6f002f, type: 2}
+  CycleHealthScale: 1.15
+  CycleDamageScale: 1.1

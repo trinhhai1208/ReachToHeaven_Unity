@@ -35,4 +35,9 @@ public class CharacterStatManager : MonoBehaviour
 
     public bool HasStat(StatType type)
         => m_baseStats.ContainsKey(type);
+
+    public void SetStat(StatType type, float value)
+    {
+        m_baseStats[type] = value;
+    }
 }

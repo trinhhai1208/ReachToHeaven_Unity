@@ -10,6 +10,7 @@ public class CharacterHP : MonoBehaviour, ISubject<Action>
     protected Action m_onGetDamages;
     protected float m_maxHP;
     protected float m_currentHP;
+    protected bool m_isDead;
 
     public event Action OnDeath;
 
@@ -24,16 +25,41 @@ public class CharacterHP : MonoBehaviour, ISubject<Action>
         m_currentHP = m_maxHP;
     }
 
+    ///<summary>
+    ///Reset full HP and alive-state when reused from an ObjectPool.
+    ///On the very first activation m_maxHP is not set yet, so Start() handles the initial fill.
+    /// </summary>
+    protected virtual void OnEnable()
+    {
+        m_isDead = false;
+        if (m_maxHP > 0)
+        {
+            m_currentHP = m_maxHP;
+            if (m_healthUI != null) m_healthUI.UpdateHPUI(m_maxHP, m_currentHP);
+        }
+    }
+
+    public virtual void ResetMaxHealth(float newMaxHP)
+    {
+        m_maxHP = newMaxHP;
+        m_currentHP = newMaxHP;
+        m_isDead = false;
+        if (m_healthUI != null) m_healthUI.UpdateHPUI(m_maxHP, m_currentHP);
+    }
+
     public virtual void GetDamages(float amount)
     {
+        if (m_isDead) return;
+
         if (amount < m_currentHP) m_currentHP -= amount;
         else
         {
             m_currentHP = 0;
+            m_isDead = true;
             OnDeath?.Invoke();
         }
 
-        m_healthUI.UpdateHPUI(m_maxHP, m_currentHP);
+        if (m_healthUI != null) m_healthUI.UpdateHPUI(m_maxHP, m_currentHP);
         m_onGetDamages?.Invoke();
     }
 

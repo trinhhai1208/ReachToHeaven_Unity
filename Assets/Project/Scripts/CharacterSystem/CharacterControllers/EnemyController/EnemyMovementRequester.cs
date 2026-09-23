@@ -18,7 +18,9 @@ public class EnemyMovementRequester : CharacterMovementRequester
     /// </summary>
     protected virtual void LateUpdate()
     {
-        if (Vector2.Distance(m_enemyProduct.PlayerRigidbody.position, gameObject.transform.position) > m_distanceThreshold)
+        float distSqr = ((Vector2)m_enemyProduct.PlayerRigidbody.position
+            - (Vector2)gameObject.transform.position).sqrMagnitude;
+        if (distSqr > m_distanceThreshold * m_distanceThreshold)
             RequestState();
         else if (!m_isComplete)
         {

@@ -10,6 +10,7 @@ public class NextSceneLoader : MonoBehaviour
     [Tooltip("Switch to LoadScene first")]
     public void LoadNextScene()
     {
+        GameManager.UnFreezeScreen();
         LoadingSceneData.NextSceneToLoad = m_nextScene;
         UnityEngine.SceneManagement.SceneManager.LoadScene((int)SceneLibrary.LoadingScene, LoadSceneMode.Additive);
     }

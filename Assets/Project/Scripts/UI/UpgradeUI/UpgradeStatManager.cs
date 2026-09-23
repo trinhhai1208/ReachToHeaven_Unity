@@ -16,7 +16,20 @@ public class UpgradeStatManager : MonoBehaviour
     [SerializeField] private List<UpgradeStat> m_upgradeStats = new List<UpgradeStat>();
 
 
-    private int[] m_index = new int[3];
+    private readonly List<int> m_index = new List<int>();
+    private readonly List<int> m_candidates = new List<int>();
+
+    private int m_pendingLevelUps;
+
+    ///<summary>
+    ///Request one upgrade selection. Multiple calls (e.g. gaining several levels from one gem)
+    ///are queued and presented one after another.
+    /// </summary>
+    public void QueueLevelUp()
+    {
+        ++m_pendingLevelUps;
+        if (!gameObject.activeSelf) gameObject.SetActive(true);
+    }
 
     private void OnEnable()
     {
@@ -24,13 +37,29 @@ public class UpgradeStatManager : MonoBehaviour
         EventAudioManager.Instance.PlayEventSFX(m_levelUpSFX);
         m_inputController.DisableInput();
 
+        ShowCards();
+    }
+
+    private void ShowCards()
+    {
         SetupIndexes();
 
-        for(int i = 0; i < m_index.Length; ++i)
+        if (m_index.Count == 0)
         {
-            Debug.Log(i);
-            m_upgradeStatPanels[i].Init(m_upgradeStats[m_index[i]], m_flipCardSFX);
-            m_upgradeStatPanels[i].gameObject.SetActive(true);
+            Debug.LogWarning($"{this}: No upgrade stats available; skipping level-up to avoid soft-lock.");
+            m_pendingLevelUps = 0;
+            gameObject.SetActive(false);
+            return;
+        }
+
+        for (int i = 0; i < m_upgradeStatPanels.Count; ++i)
+        {
+            if (i < m_index.Count)
+            {
+                m_upgradeStatPanels[i].Init(m_upgradeStats[m_index[i]], m_flipCardSFX);
+                m_upgradeStatPanels[i].gameObject.SetActive(true);
+            }
+            else m_upgradeStatPanels[i].gameObject.SetActive(false);
         }
     }
 
@@ -40,16 +69,27 @@ public class UpgradeStatManager : MonoBehaviour
         m_inputController.EnableInput();
     }
 
+    ///<summary>
+    ///Picks distinct upgrade indices, capped by however many stats and panels exist.
+    ///Safe when the pool has fewer than 3 entries (partial Fisher-Yates shuffle).
+    /// </summary>
     private void SetupIndexes()
     {
-        m_index[0] = Random.Range(0, m_upgradeStats.Count);
+        m_index.Clear();
 
-        m_index[1] = Random.Range(0, m_upgradeStats.Count - 1);
-        if (m_index[1] >= m_index[0]) ++m_index[1];
+        int statCount = m_upgradeStats.Count;
+        int cardCount = Mathf.Min(m_upgradeStatPanels.Count, statCount);
+        if (cardCount <= 0) return;
 
-        m_index[2] = Random.Range(0, m_upgradeStats.Count - 2);
-        if (m_index[2] >= Mathf.Min(m_index[0], m_index[1])) ++m_index[2];
-        if (m_index[2] >= Mathf.Max(m_index[0], m_index[1])) ++m_index[2];
+        m_candidates.Clear();
+        for (int i = 0; i < statCount; ++i) m_candidates.Add(i);
+
+        for (int i = 0; i < cardCount; ++i)
+        {
+            int swap = Random.Range(i, statCount);
+            (m_candidates[i], m_candidates[swap]) = (m_candidates[swap], m_candidates[i]);
+            m_index.Add(m_candidates[i]);
+        }
     }
 
     public void OnChooseStat(int index)
@@ -58,6 +98,9 @@ public class UpgradeStatManager : MonoBehaviour
 
         UpgradeStat upgradeStat = m_upgradeStats[m_index[index]];
         m_statManager.UpgradeStat(upgradeStat.UpgradeStatSystemData, upgradeStat.AdditionType);
-        gameObject.SetActive(false);
+
+        --m_pendingLevelUps;
+        if (m_pendingLevelUps > 0) ShowCards();
+        else gameObject.SetActive(false);
     }
 }

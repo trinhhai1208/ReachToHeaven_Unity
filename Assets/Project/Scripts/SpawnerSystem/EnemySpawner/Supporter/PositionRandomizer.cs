@@ -38,8 +38,6 @@ public class PositionRandomizer
             Vector2 result = new Vector2(xPos, yPos);
             if (Random.value <= 0.5f) result *= -1;
 
-            --m_rightArea;
-
             return (Vector2)m_target.transform.position + result;
         }
         else
@@ -48,8 +46,6 @@ public class PositionRandomizer
             float xPos = Random.Range(-m_outerBound.x, m_outerBound.x);
             Vector2 result = new Vector2(xPos, yPos);
             if (Random.value <= .5f) result *= -1;
-
-            --m_topArea;
 
             return (Vector2)m_target.transform.position + result;
         }

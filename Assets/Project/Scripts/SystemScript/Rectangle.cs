@@ -9,7 +9,7 @@ public class Rectangle
 
     public Rectangle(float beginWidth, float endWidth, float beginHeight, float endHeight)
     {
-        Width = Mathf.Abs(endWidth - endWidth);
+        Width = Mathf.Abs(endWidth - beginWidth);
         Height = Mathf.Abs(endHeight - beginHeight);
 
         Area = Width * Height;

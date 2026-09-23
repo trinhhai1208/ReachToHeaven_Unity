@@ -10,6 +10,7 @@ public class PlayerAttackRequester : CharacterAttackRequester
     [SerializeField] private List<AudioClip> m_clips = new List<AudioClip>();
     private InputController m_inputController;
     private CharacterStatManager m_statManager;
+    private Camera m_mainCamera;
 
     private RequestStateData<PlayerAttackStateContext> m_requestData =
         new RequestStateData<PlayerAttackStateContext>(StateType.AttackState);
@@ -26,6 +27,7 @@ public class PlayerAttackRequester : CharacterAttackRequester
     {
         m_inputController = GetComponent<InputController>();
         m_statManager = GetComponent<CharacterStatManager>();
+        m_mainCamera = Camera.main;
 
         m_eventHandler.OnEventCallBack +=
             () =>
@@ -57,6 +59,7 @@ public class PlayerAttackRequester : CharacterAttackRequester
     private void OnDestroy()
     {
         m_inputController.UnSubscribe(OnAttack);
+        m_weaponSwitcher.Dispose();
     }
 
     private void OnAttack(InputAction.CallbackContext context)
@@ -65,7 +68,7 @@ public class PlayerAttackRequester : CharacterAttackRequester
         {
             RequestState();
             m_eventHandler.ResetAnimationTime();
-            m_attackTime.StartCountDown(this, m_statManager.StatDictionary[StatType.AttackCountDown]);
+            m_attackTime.StartCountDown(m_statManager.StatDictionary[StatType.AttackCountDown]);
         }
     }
 
@@ -91,7 +94,10 @@ public class PlayerAttackRequester : CharacterAttackRequester
 
     public override void SetupDynamicContext()
     {
-        Vector2 direction = Camera.main.ScreenToWorldPoint(Mouse.current.position.value) - gameObject.transform.position;
+        // Refresh the cache if the previously cached camera was destroyed (e.g. scene change).
+        if (m_mainCamera == null) m_mainCamera = Camera.main;
+
+        Vector2 direction = m_mainCamera.ScreenToWorldPoint(Mouse.current.position.value) - gameObject.transform.position;
         m_requestData.Context.Direction = direction.normalized;
 
         m_requestData.Context.WeaponIndex = m_weaponSwitcher.WeaponIndex;

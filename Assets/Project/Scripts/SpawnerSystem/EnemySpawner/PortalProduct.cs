@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -10,14 +9,17 @@ public class PortalProduct : MonoBehaviour, IProduct
     public Transform EnemyField { get; private set; }
     public Rigidbody2D PlayerRigidbody { get; private set; }
 
-    public Action OnCount;
+    ///<summary>Wave this portal must spawn for (set by PortalSpawner before activation).</summary>
+    public WaveDefinition ActiveWave { get; private set; }
 
-    public void Init(Rigidbody2D playerRigidbody, Transform enemyProductField, Action onCount)
+    public void Init(Rigidbody2D playerRigidbody, Transform enemyProductField)
     {
         PlayerRigidbody = playerRigidbody;
         EnemyField = enemyProductField;
-        OnCount = onCount;
     }
+
+    public void SetActiveWave(WaveDefinition wave)
+        => ActiveWave = wave;
 
     public void Release()
         => m_pool.Release(this);

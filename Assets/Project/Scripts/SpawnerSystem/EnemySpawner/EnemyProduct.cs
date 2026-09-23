@@ -11,6 +11,9 @@ public class EnemyProduct : MonoBehaviour, IProduct
     public void Init(Rigidbody2D playerRigidbody)
         => PlayerRigidbody = playerRigidbody;
 
+    private void OnEnable() => EnemyTracker.OnActivated();
+    private void OnDisable() => EnemyTracker.OnDeactivated();
+
     #region Implement IProduct
     public ObjectPool<IProduct> GetPool()
         => m_pool;

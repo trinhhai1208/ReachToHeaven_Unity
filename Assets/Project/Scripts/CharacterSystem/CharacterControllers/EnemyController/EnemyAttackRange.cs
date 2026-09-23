@@ -28,7 +28,7 @@ public class EnemyAttackRange : MonoBehaviour
             if (m_attackTimer.IsReadyToAttack())
             {
                 OnInRange?.Invoke();
-                m_attackTimer.StartCountDown(this, m_characterStatManager.StatDictionary[StatType.AttackCountDown]);
+                m_attackTimer.StartCountDown(m_characterStatManager.StatDictionary[StatType.AttackCountDown]);
             }
             m_cachedDetectRoutine = StartCoroutine(DetectPlayerRoutine());
         }
@@ -59,7 +59,7 @@ public class EnemyAttackRange : MonoBehaviour
             if (collider != null)
             {
                 OnInRange?.Invoke();
-                m_attackTimer.StartCountDown(this, m_characterStatManager.StatDictionary[StatType.AttackCountDown]);
+                m_attackTimer.StartCountDown(m_characterStatManager.StatDictionary[StatType.AttackCountDown]);
             }
         }
     }

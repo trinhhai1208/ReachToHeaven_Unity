@@ -16,7 +16,9 @@ public abstract class Singleton<T> : MonoBehaviour where T : Behaviour
             if (m_instance == null)
             {
                 m_instance = FindAnyObjectByType<T>();
-                if (m_instance == null) m_instance = SetupInstance();
+                if (m_instance == null)
+                    Debug.LogError($"{typeof(T).Name}.Instance was requested but no instance exists in the scene. " +
+                        $"Add the prefab/GameObject that carries {typeof(T).Name} to the scene.");
             }
             return m_instance;
         }
@@ -30,12 +32,5 @@ public abstract class Singleton<T> : MonoBehaviour where T : Behaviour
             if (m_isPersisted) DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);
-    }
-
-    protected static T SetupInstance()
-    {
-        GameObject instance = new GameObject(typeof(T).Name);
-        if (m_isPersisted) DontDestroyOnLoad(instance.gameObject);
-        return instance.AddComponent<T>();
     }
 }

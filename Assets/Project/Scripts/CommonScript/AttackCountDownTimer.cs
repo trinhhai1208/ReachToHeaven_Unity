@@ -1,23 +1,14 @@
 using System;
-using System.Collections;
-using System.Security.Cryptography;
 using UnityEngine;
 
 [Serializable]
 public class AttackCountDownTimer
 {
     //
-    private bool m_readyToAttack = true;
+    private float m_nextAttackTime;
 
-    public bool IsReadyToAttack() => m_readyToAttack;
+    public bool IsReadyToAttack() => Time.time >= m_nextAttackTime;
 
-    public void StartCountDown(MonoBehaviour monoBehaviour, float countDownTime)
-        => monoBehaviour.StartCoroutine(CountDownRoutine(countDownTime));
-
-    private IEnumerator CountDownRoutine(float countDownTime)
-    {
-        m_readyToAttack = false;
-        yield return new WaitForSeconds(countDownTime);
-        m_readyToAttack = true;
-    }
+    public void StartCountDown(float countDownTime)
+        => m_nextAttackTime = Time.time + countDownTime;
 }

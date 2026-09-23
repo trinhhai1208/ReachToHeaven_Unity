@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.Collections;
 
 public class Altar : MonoBehaviour
 {

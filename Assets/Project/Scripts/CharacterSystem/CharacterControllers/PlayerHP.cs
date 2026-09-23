@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using System.Collections;
 public class PlayerHP : CharacterHP
 {
     //
-    [SerializeField] private float m_regenateInterval;
+    [FormerlySerializedAs("m_regenateInterval")]
+    [SerializeField] private float m_regenerateInterval;
 
     protected override void Start()
     {
@@ -16,18 +18,23 @@ public class PlayerHP : CharacterHP
 
     public override void GetDamages(float amount)
     {
-        //float damages = ReduceDamage(amount, m_characterStatsManager.StatDictionary[StatType.DamageReduction]);
+        if (m_isDead) return;
+
+        if (m_characterStatsManager.StatDictionary.TryGetValue(StatType.DamageReduction, out float reduction))
+            amount = ReduceDamage(amount, reduction);
 
         base.GetDamages(amount);
+        GameEvents.TriggerPlayerHPChanged(m_currentHP, m_maxHP);
 
-        if (amount >= m_currentHP)
+        if (m_isDead)
         {
-            SingletonUIManager.Instance.GameOverPanel.Active();
+            GameEvents.TriggerPlayerDied();
         }
     }
 
     private float ReduceDamage(float amount, float reduceAmount)
     {
+        reduceAmount = Mathf.Clamp01(reduceAmount);
         amount -= (reduceAmount * amount);
         if (amount < 0) amount = 0;
 
@@ -44,13 +51,13 @@ public class PlayerHP : CharacterHP
     {
         while (true)
         {
-            if (m_currentHP < m_maxHP)
+            if (!m_isDead && m_currentHP < m_maxHP)
             {
                 m_currentHP =
                     Mathf.Clamp(m_currentHP += m_characterStatsManager.StatDictionary[StatType.Regeneration], 0, m_maxHP);
                 m_healthUI.UpdateHPUI(m_maxHP, m_currentHP);
                 //Debug.Log("Regen");
-                yield return new WaitForSeconds(m_regenateInterval);
+                yield return new WaitForSeconds(m_regenerateInterval);
             }
 
             yield return null;

@@ -31,6 +31,18 @@ public class ProjectileProduct : DamageSource
         m_isReleased = false;
     }
 
+    protected override void Start()
+    {
+        m_lifeController.Subscribe(_ =>
+        {
+            if (!m_isReleased)
+            {
+                m_isReleased = true;
+                m_pool.Release(this);
+            }
+        });
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (m_isReleased) return;

@@ -5,6 +5,7 @@ public class MoveStateContext : StateContext
     //Static Data
     public Rigidbody2D CharacterRigid;
     public MonoBehaviour RoutineCaller;
+    public Coroutine MoveRoutine;
 
     //DynamicData
     public Vector2 TargetPosition;

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(PlayableDirector))]
-public class MainMenuSceneManager : SceneManager
+public class MainMenuSceneManager : BaseSceneManager
 {
     //
     [SerializeField] private AudioClip m_ambientAudio;

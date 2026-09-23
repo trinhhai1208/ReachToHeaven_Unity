@@ -21,15 +21,16 @@ public class ExpBarManager : MonoBehaviour
     public void UpdateExpAmount(float amount)
     {
         m_currentExp += amount;
-        if (m_currentExp >= m_maxExp)
+
+        while (m_currentExp >= m_maxExp)
         {
             m_currentExp -= m_maxExp;
             ++m_currentLevel;
             m_maxExp = GetNextMaxExp(m_currentLevel);
-            m_expBarUI.UpdateUI(m_currentLevel / m_maxExp, m_currentLevel);
-            m_upgradeManager.gameObject.SetActive(true);
+            m_upgradeManager.QueueLevelUp();
         }
-        else m_expBarUI.UpdateUI(m_currentExp / m_maxExp);
+
+        m_expBarUI.UpdateUI(m_currentExp / m_maxExp, m_currentLevel);
     }
 
     ///<summary>

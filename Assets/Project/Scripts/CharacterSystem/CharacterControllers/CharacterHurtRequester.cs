@@ -1,12 +1,17 @@
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(CharacterHP), typeof(CharacterController))]
 public class CharacterHurtRequester : MonoBehaviour, IStateRequester
 {
     //
-    [SerializeField] private float m_invinsibleTime;
+    [FormerlySerializedAs("m_invinsibleTime")]
+    [SerializeField] private float m_invincibleTime;
     [SerializeField] private AudioClip m_hurtSFX;
     [SerializeField] private AudioClip m_deathSFX;
+    [SerializeField] private bool m_spawnGemOnDeath = true;
+    [SerializeField] private bool m_screenShakeOnHurt = false;
  
     private NextStateChecker m_stateChecker;
     private CharacterHP m_characterHP;
@@ -31,7 +36,14 @@ public class CharacterHurtRequester : MonoBehaviour, IStateRequester
 
         m_characterHP.Subscribe(RequestState);
         m_characterHP.OnDeath += () => m_isDeath = true;
-        m_characterHP.OnDeath += () => GemManager.Instance.WrappedSpawn(gameObject.transform.position);
+        m_characterHP.OnDeath += () =>
+        {
+            if (m_spawnGemOnDeath && GemManager.Instance != null)
+                GemManager.Instance.WrappedSpawn(gameObject.transform.position);
+        };
+        // Count a kill only on genuine death, so despawn/scene teardown don't inflate the stat.
+        if (TryGetComponent(out EnemyProduct _))
+            m_characterHP.OnDeath += EnemyTracker.OnKilled;
     }
 
     private void OnEnable()
@@ -53,8 +65,12 @@ public class CharacterHurtRequester : MonoBehaviour, IStateRequester
         m_requestHurtData.Context.CharacterAnimatorController = animController;
         m_requestHurtData.Context.RoutineCaller = this;
 
-        if(m_hurtSFX != null) 
+        if(m_hurtSFX != null)
             m_requestHurtData.Context.EnterEvent = () => EventAudioManager.Instance.PlayEventSFX(m_hurtSFX);
+
+        if (m_screenShakeOnHurt)
+            m_requestHurtData.Context.EnterEvent += () =>
+                Camera.main?.transform.DOShakePosition(0.2f, 0.2f, 10, 90, false, true);
 
         m_requestHurtData.Context.CompleteEvent = m_stateChecker.ResetState;
 
@@ -67,7 +83,18 @@ public class CharacterHurtRequester : MonoBehaviour, IStateRequester
             m_requestDeathData.Context.EnterEvent += () => EventAudioManager.Instance.PlayEventSFX(m_deathSFX);
         m_requestDeathData.Context.CompleteEvent += m_stateChecker.ResetState;
         m_requestDeathData.Context.DecayEvent += m_componentCollector.ActiveAllComponents;
-        m_requestDeathData.Context.DecayEvent += () => gameObject.SetActive(false);
+        m_requestDeathData.Context.DecayEvent += Decay;
+    }
+
+    ///<summary>
+    ///Return the object to its ObjectPool when possible, otherwise just deactivate it.
+    /// </summary>
+    private void Decay()
+    {
+        if (TryGetComponent(out EnemyProduct enemyProduct) && enemyProduct.GetPool() != null)
+            enemyProduct.GetPool().Release(enemyProduct);
+        else
+            gameObject.SetActive(false);
     }
     public void SetupDynamicContext()
     {
