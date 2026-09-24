@@ -4803,6 +4803,23 @@ MonoBehaviour:
       m_Action: Switch Weapon
       m_Flags: 0
     m_Flags: 0
+  m_pauseAction:
+    m_Name: Pause
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: a23528b1-36f4-41d3-882f-2d6b63300fa1
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 75c328e1-51f2-4bc4-b78b-0382062f8319
+      m_Path: <Keyboard>/p
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Pause
+      m_Flags: 0
+    m_Flags: 0
 --- !u!114 &1030592062
 MonoBehaviour:
   m_ObjectHideFlags: 0

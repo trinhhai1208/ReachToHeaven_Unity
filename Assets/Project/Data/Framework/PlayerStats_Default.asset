@@ -16,7 +16,7 @@ MonoBehaviour:
   CharacterName: Knight
   m_stats:
   - Type: 0
-    Value: 2
+    Value: 1
   - Type: 2
     Value: 1
   - Type: 3

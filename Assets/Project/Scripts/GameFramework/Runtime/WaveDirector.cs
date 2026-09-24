@@ -60,6 +60,8 @@ public class WaveDirector : MonoBehaviour
     {
         if (RunConfig.Current != null && RunConfig.Current.Level != null)
             return RunConfig.Current.Level;
+        if (RunConfig.Current != null && RunConfig.Current.Mode != null)
+            return null;
         if (m_levelCatalog != null && m_levelCatalog.Count > 0)
             return m_levelCatalog.GetLevel(0);
         return null;
