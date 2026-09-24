@@ -8,6 +8,7 @@ public class GamePlaySceneManager : BaseSceneManager
     [SerializeField] private AudioClip m_ambientAudio;
     [SerializeField] private AudioClip m_introAudio;
     [SerializeField] private StatLog m_statLog;
+    [SerializeField] private LevelCatalog m_levelCatalog;
     [SerializeField] private float m_surviveDuration = 300f;
 
     private float m_elapsed;
@@ -29,6 +30,11 @@ public class GamePlaySceneManager : BaseSceneManager
         // Mode & Level aware: Level wins at its Duration; Mode wins at its Duration; Endless never wins on time.
         LevelDefinition level = RunConfig.Current != null ? RunConfig.Current.Level : null;
         GameModeDefinition mode = RunConfig.Current != null ? RunConfig.Current.Mode : null;
+
+        if (level == null && mode == null && m_levelCatalog != null && m_levelCatalog.Count > 0)
+        {
+            level = m_levelCatalog.GetLevel(0);
+        }
 
         if (level != null)
         {

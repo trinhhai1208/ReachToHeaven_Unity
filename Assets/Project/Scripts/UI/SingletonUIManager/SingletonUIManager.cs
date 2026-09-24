@@ -19,6 +19,16 @@ public class SingletonUIManager : Singleton<SingletonUIManager>
         base.Awake();
     }
 
+    private void Start()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += HandleSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= HandleSceneLoaded;
+    }
+
     private void OnEnable()
     {
         GameEvents.OnPlayerDied += HandlePlayerDied;
@@ -29,6 +39,23 @@ public class SingletonUIManager : Singleton<SingletonUIManager>
     {
         GameEvents.OnPlayerDied -= HandlePlayerDied;
         GameEvents.OnLevelCompleted -= HandleLevelCompleted;
+    }
+
+    private void HandleSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+    {
+        if (scene.buildIndex != (int)SceneLibrary.LoadingScene)
+        {
+            if (m_gameOverPanel != null && m_gameOverPanel.gameObject.activeSelf)
+                m_gameOverPanel.gameObject.SetActive(false);
+
+            if (m_winPanel != null && m_winPanel.gameObject.activeSelf)
+                m_winPanel.gameObject.SetActive(false);
+
+            if (m_settingPanel != null && m_settingPanel.gameObject.activeSelf)
+                m_settingPanel.gameObject.SetActive(false);
+
+            GameManager.UnFreezeScreen();
+        }
     }
 
     private void HandlePlayerDied()

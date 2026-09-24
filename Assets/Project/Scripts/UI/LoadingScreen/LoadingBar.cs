@@ -30,6 +30,7 @@ public class LoadingBar : MonoBehaviour
             yield return null;
         }
 
+        GameManager.UnFreezeScreen();
         loadingOperation.allowSceneActivation = true;
     }
 }

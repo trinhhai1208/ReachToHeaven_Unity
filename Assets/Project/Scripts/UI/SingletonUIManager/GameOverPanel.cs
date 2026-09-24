@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 
+using UnityEngine.UI;
+
 public class GameOverPanel : MonoBehaviour
 {
     private TextMeshProUGUI m_statsText;
@@ -26,6 +28,22 @@ public class GameOverPanel : MonoBehaviour
     {
         GameManager.FreezeScreen();
 
+        foreach (var btn in GetComponentsInChildren<Button>(true))
+        {
+            btn.interactable = true;
+            btn.onClick.RemoveListener(OnButtonClicked);
+            btn.onClick.AddListener(OnButtonClicked);
+        }
+
+        // Safety guard: ensure title text is never victory text
+        foreach (var tmp in GetComponentsInChildren<TextMeshProUGUI>(true))
+        {
+            if (tmp != m_statsText && tmp.text != null && tmp.text.Contains("NAILED IT"))
+            {
+                tmp.text = "GAME OVER";
+            }
+        }
+
         if (m_statsText == null) m_statsText = AddStatsText();
 
         int min = (int)GameStats.ElapsedTime / 60;
@@ -33,6 +51,12 @@ public class GameOverPanel : MonoBehaviour
         m_statsText.text = $"SURVIVED  {min:D2}:{sec:D2}   KILLED  {GameStats.KillCount}";
 
         gameObject.SetActive(true);
+    }
+
+    private void OnButtonClicked()
+    {
+        foreach (var btn in GetComponentsInChildren<Button>(true))
+            btn.interactable = false;
     }
 
     public void Deactive()

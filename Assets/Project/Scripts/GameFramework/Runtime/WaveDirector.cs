@@ -16,6 +16,7 @@ public class WaveDirector : MonoBehaviour
 
     [Header("Config (falls back to RunConfig.Current.Mode when empty)")]
     [SerializeField] private GameModeDefinition m_modeOverride;
+    [SerializeField] private LevelCatalog m_levelCatalog;
 
     [Header("Executor — the spawner that performs each wave")]
     [SerializeField] private PortalSpawner m_portalSpawner;
@@ -59,6 +60,8 @@ public class WaveDirector : MonoBehaviour
     {
         if (RunConfig.Current != null && RunConfig.Current.Level != null)
             return RunConfig.Current.Level;
+        if (m_levelCatalog != null && m_levelCatalog.Count > 0)
+            return m_levelCatalog.GetLevel(0);
         return null;
     }
 
@@ -72,12 +75,13 @@ public class WaveDirector : MonoBehaviour
         if (m_level != null && m_level.Waves != null && m_level.Waves.Count > 0)
         {
             float interval = m_level.WaveInterval > 0f ? m_level.WaveInterval : 20f;
+            float initialDelay = 2f;
             for (int i = 0; i < m_level.Waves.Count; ++i)
             {
                 WaveDefinition wave = m_level.Waves[i];
                 if (wave == null) continue;
 
-                float start = wave.StartTime > 0f ? wave.StartTime : (i * interval);
+                float start = initialDelay + (i * interval);
                 m_scheduledWaves.Add(new ScheduledWave { Wave = wave, StartTime = start });
             }
         }

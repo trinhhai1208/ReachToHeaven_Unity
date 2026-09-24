@@ -11,15 +11,31 @@ public class StatLog : MonoBehaviour
 
     private Dictionary<StatType, StatLogData> m_statDictionary = new Dictionary<StatType, StatLogData>();
 
+    private static readonly StatType[] DisplayStatTypes = new StatType[]
+    {
+        StatType.AttackCountDown,
+        StatType.CritChance,
+        StatType.CritDamage,
+        StatType.Damage,
+        StatType.DamageReduction,
+        StatType.Health,
+        StatType.MovementSpeed,
+        StatType.PickupRange,
+        StatType.Piercing,
+        StatType.Regeneration
+    };
+
     private void Start()
     {
-        List<KeyValuePair<StatType, float>> statList 
-            = m_playerStatManager.StatDictionary.ToList<KeyValuePair<StatType, float>>();
-
-        for(int i = 0; i < m_statLogDatas.Count; ++i)
+        for (int i = 0; i < m_statLogDatas.Count && i < DisplayStatTypes.Length; ++i)
         {
-            m_statDictionary[statList[i].Key] = m_statLogDatas[i];
-            m_statDictionary[statList[i].Key].InitData(m_statSprites[i], statList[i].Value);
+            StatType type = DisplayStatTypes[i];
+            if (m_playerStatManager.StatDictionary.TryGetValue(type, out float value))
+            {
+                m_statDictionary[type] = m_statLogDatas[i];
+                Sprite sprite = i < m_statSprites.Count ? m_statSprites[i] : null;
+                m_statLogDatas[i].InitData(sprite, value);
+            }
         }
     }
 
@@ -30,6 +46,9 @@ public class StatLog : MonoBehaviour
         => m_playerStatManager.UnSubscribe(UpdateStat);
 
     private void UpdateStat(StatType type, float value)
-        => m_statDictionary[type].UpdateValue(value);
+    {
+        if (m_statDictionary.TryGetValue(type, out StatLogData data))
+            data.UpdateValue(value);
+    }
 
 }

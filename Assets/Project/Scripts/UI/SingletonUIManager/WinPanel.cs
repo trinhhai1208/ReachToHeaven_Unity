@@ -20,12 +20,18 @@ public class WinPanel : MonoBehaviour
         if (buttons.Length >= 1)
         {
             Vector2 pos = buttons[0].GetComponent<RectTransform>().anchoredPosition;
-            AddLabel("Main Menu", new Vector2(pos.x, pos.y - 65));
+            AddLabel("Menu", new Vector2(pos.x, pos.y - 65));
+
+            var loader = buttons[0].GetComponent<NextSceneLoader>();
+            if (loader != null) loader.NextScene = SceneLibrary.MapSelect;
         }
         if (buttons.Length >= 2)
         {
             Vector2 pos = buttons[1].GetComponent<RectTransform>().anchoredPosition;
             AddLabel("Play Again", new Vector2(pos.x, pos.y - 65));
+
+            var loader = buttons[1].GetComponent<NextSceneLoader>();
+            if (loader != null) loader.NextScene = SceneLibrary.GamePlay;
         }
         m_statsText = AddStatsText();
     }
@@ -70,11 +76,24 @@ public class WinPanel : MonoBehaviour
 
         EnsureInit();
 
+        foreach (var btn in GetComponentsInChildren<Button>(true))
+        {
+            btn.interactable = true;
+            btn.onClick.RemoveListener(OnButtonClicked);
+            btn.onClick.AddListener(OnButtonClicked);
+        }
+
         int min = (int)GameStats.ElapsedTime / 60;
         int sec = (int)GameStats.ElapsedTime % 60;
         m_statsText.text = $"SURVIVED  {min:D2}:{sec:D2}   KILLED  {GameStats.KillCount}";
 
         gameObject.SetActive(true);
+    }
+
+    private void OnButtonClicked()
+    {
+        foreach (var btn in GetComponentsInChildren<Button>(true))
+            btn.interactable = false;
     }
 
     public void Deactive()

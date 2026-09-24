@@ -19,8 +19,8 @@ MonoBehaviour:
     Thumbnail: {fileID: 0}
     Duration: 60
     WaveInterval: 20
-    PortalCountOverride: 2
-    EnemiesPerPortalOverride: 3
+    PortalCountOverride: 0
+    EnemiesPerPortalOverride: 0
     Map: {fileID: 11400000, guid: 2dfaff0b1187e1846bb1ffd918c03558, type: 2}
     Waves:
     - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75d, type: 2}
@@ -32,8 +32,8 @@ MonoBehaviour:
     Thumbnail: {fileID: 0}
     Duration: 90
     WaveInterval: 20
-    PortalCountOverride: 2
-    EnemiesPerPortalOverride: 3
+    PortalCountOverride: 0
+    EnemiesPerPortalOverride: 0
     Map: {fileID: 11400000, guid: 2dfaff0b1187e1846bb1ffd918c03558, type: 2}
     Waves:
     - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75d, type: 2}
@@ -46,8 +46,8 @@ MonoBehaviour:
     Thumbnail: {fileID: 0}
     Duration: 120
     WaveInterval: 20
-    PortalCountOverride: 2
-    EnemiesPerPortalOverride: 3
+    PortalCountOverride: 0
+    EnemiesPerPortalOverride: 0
     Map: {fileID: 11400000, guid: 2dfaff0b1187e1846bb1ffd918c03558, type: 2}
     Waves:
     - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75d, type: 2}
@@ -61,8 +61,8 @@ MonoBehaviour:
     Thumbnail: {fileID: 0}
     Duration: 150
     WaveInterval: 25
-    PortalCountOverride: 2
-    EnemiesPerPortalOverride: 3
+    PortalCountOverride: 0
+    EnemiesPerPortalOverride: 0
     Map: {fileID: 11400000, guid: 2dfaff0b1187e1846bb1ffd918c03558, type: 2}
     Waves:
     - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75d, type: 2}
@@ -77,8 +77,8 @@ MonoBehaviour:
     Thumbnail: {fileID: 0}
     Duration: 180
     WaveInterval: 25
-    PortalCountOverride: 2
-    EnemiesPerPortalOverride: 3
+    PortalCountOverride: 0
+    EnemiesPerPortalOverride: 0
     Map: {fileID: 11400000, guid: 2dfaff0b1187e1846bb1ffd918c03558, type: 2}
     Waves:
     - {fileID: 11400000, guid: 77bef601178404247b3cc419b4a9c75d, type: 2}

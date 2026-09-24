@@ -10914,6 +10914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveDirector
   m_modeOverride: {fileID: 11400000, guid: dcd685c4cd269684cbb937b28363a5ae, type: 2}
+  m_levelCatalog: {fileID: 11400000, guid: 91110001905d96a04f769514dbaace37, type: 2}
   m_portalSpawner: {fileID: 348019161}
   OnWaveStarted:
     m_PersistentCalls:
@@ -12466,6 +12467,7 @@ MonoBehaviour:
   m_ambientAudio: {fileID: 8300000, guid: e6f76d2b81fc2024bbc3276505cb5f1c, type: 3}
   m_introAudio: {fileID: 8300000, guid: 127987398dc080b4d9d1957767366f35, type: 3}
   m_statLog: {fileID: 251640067}
+  m_levelCatalog: {fileID: 11400000, guid: 91110001905d96a04f769514dbaace37, type: 2}
   m_surviveDuration: 300
 --- !u!4 &2086572335
 Transform:
